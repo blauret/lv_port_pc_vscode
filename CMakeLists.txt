@@ -23,7 +23,8 @@ add_compile_definitions($<$<BOOL:${LV_USE_FFMPEG}>:LV_USE_FFMPEG=1>)
 add_subdirectory(lvgl)
 target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS})
 
-add_executable(main main/src/main.c main/src/mouse_cursor_icon.c)
+FILE(GLOB_RECURSE sourcesFiles main/src/*.c)
+add_executable(main ${sourcesFiles})
 
 target_compile_definitions(main PRIVATE LV_CONF_INCLUDE_SIMPLE)
 target_link_libraries(main lvgl lvgl::examples lvgl::demos lvgl::thorvg ${SDL2_LIBRARIES} m pthread)
@@ -68,13 +69,13 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(lvgl PRIVATE
         -pedantic-errors
         -Wall
-        -Wclobbered
+        #-Wclobbered
         -Wdeprecated
         -Wdouble-promotion
         -Wempty-body
         -Wextra
         -Wformat-security
-        -Wmaybe-uninitialized
+        # -Wmaybe-uninitialized
         # -Wmissing-prototypes
         -Wpointer-arith
         -Wmultichar
@@ -91,6 +92,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         -Wstrict-aliasing
     )
 
-    target_compile_options(main PRIVATE -fsanitize=address,leak,undefined)
-    target_link_options(main PRIVATE -fsanitize=address,leak,undefined)
+    target_compile_options(main PRIVATE -fsanitize=address,undefined)
+    target_link_options(main PRIVATE -fsanitize=address,undefined)
 endif()

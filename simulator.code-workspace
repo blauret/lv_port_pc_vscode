@@ -33,7 +33,7 @@
 				"label": "Build",
 				"command": "cmake",
 				"args": [
-					"--build", "${command:cmake.buildDirectory}"
+					"--build", "build"
 				],
 				"group": {
 					"kind": "build",
